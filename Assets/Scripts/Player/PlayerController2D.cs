@@ -422,4 +422,14 @@ private float ComputeHorizontal(float vx, float h, float dt)
             if (hits[i].attachedRigidbody != rb) return true; // ignore our own collider
         return false;
     }
+
+    public void RefillDash()
+    {
+        dashesLeft = maxDashes;
+        dashCooldownTimer = 0f;
+        if (state == MoveState.Dashing || state == MoveState.DashFreeze)
+        {
+            state = MoveState.Normal;
+        }
+    }
 }

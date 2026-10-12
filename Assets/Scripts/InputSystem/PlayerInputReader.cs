@@ -34,7 +34,7 @@ public static class PlayerInputReader
         s.JumpPressed = k.spaceKey.wasPressedThisFrame;
         s.JumpHeld = k.spaceKey.isPressed;
         s.DashPressed = k.leftShiftKey.wasPressedThisFrame || k.rightShiftKey.wasPressedThisFrame;
-        s.GripHeld = k.leftCtrlKey.isPressed || k.rightCtrlKey.isPressed;
+        s.GripHeld = k.spaceKey.isPressed;
 #else
         s.Move = new Vector2(
             (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f),
@@ -42,7 +42,7 @@ public static class PlayerInputReader
         s.JumpPressed = Input.GetKeyDown(KeyCode.Space);
         s.JumpHeld = Input.GetKey(KeyCode.Space);
         s.DashPressed = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
-        s.GripHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+        s.GripHeld = Input.GetKey(KeyCode.Space);
 #endif
         return s;
     }

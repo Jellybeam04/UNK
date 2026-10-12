@@ -2,8 +2,9 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Room
   layers:
   - Default
   - TransparentFX
@@ -41,3 +42,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Backgroud
+    uniqueID: 889051865
+    locked: 0
+  - name: Terrain
+    uniqueID: 1795340787
+    locked: 0
+  - name: Character
+    uniqueID: 518271961
+    locked: 0
+  - name: Foreground
+    uniqueID: 83371959
+    locked: 0
+  - name: VFX
+    uniqueID: 2901439751
+    locked: 0
+  - name: UI
+    uniqueID: 2308096369
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  m_MigratedRenderPipelines: []
