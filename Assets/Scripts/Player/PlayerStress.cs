@@ -19,6 +19,8 @@ public class PlayerStress : MonoBehaviour
     [Header("Runtime value")]
     [SerializeField, Range(0f, 100f)] private float current;
 
+    public static event Action<float> OnStressChanged;
+
     /// <summary>Current stress in percent (0..100).</summary>
     public float Current => current;
     /// <summary>Current stress as 0..1 (handy for a future UI).</summary>
@@ -33,6 +35,7 @@ public class PlayerStress : MonoBehaviour
     {
         if (IsOverloaded) return;
         current = Mathf.Clamp(current + amount, 0f, 100f);
+        OnStressChanged?.Invoke(Normalized);
         if (current >= 100f)
         {
             IsOverloaded = true;
@@ -48,6 +51,7 @@ public class PlayerStress : MonoBehaviour
     {
         if (IsOverloaded) return;
         current = Mathf.Max(0f, current - groundRecoveryRate * dt);
+        OnStressChanged?.Invoke(Normalized);
     }
 
     public void ResetStress()

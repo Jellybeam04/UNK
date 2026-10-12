@@ -94,7 +94,7 @@ public class PlayerController2D : MonoBehaviour
     private PlayerInputState input;
     private bool jumpPressLatch, dashPressLatch;
 
-    private bool grounded, gripping, jumpRising;
+    private bool grounded, gripping, jumpRising, gripAllowed = true;
     private int wallSide, lastWallSide, facing = 1;
 
     private float dashFreezeTimer, dashTimer, dashCooldownTimer, wallJumpLockTimer;
@@ -179,6 +179,7 @@ public class PlayerController2D : MonoBehaviour
         dashesLeft = maxDashes;
         wallJumpsUsed = 0;
         gripping = jumpRising = false;
+        gripAllowed = true;
         jumpPressLatch = dashPressLatch = false;
         input = default;
         if (rb != null)
@@ -201,14 +202,31 @@ public class PlayerController2D : MonoBehaviour
             return;
         }
 
-        // --- Grip (Ctrl + touching a wall)
-        gripping = input.GripHeld && wallSide != 0 && wallJumpLockTimer <= 0f;
+        // --- Grip eligibility:
+        // Releasing Space allows gripping.
+        // Holding Space while not touching a wall (or after jumping) disallows auto-grip upon touching a wall.
+        if (!input.GripHeld)
+        {
+            gripAllowed = true;
+        }
+        else if (wallSide == 0)
+        {
+            gripAllowed = false;
+        }
+
+        // --- Grip (Space held + grip allowed + touching a wall)
+        gripping = input.GripHeld && gripAllowed && wallSide != 0 && wallJumpLockTimer <= 0f;
 
         // --- Jumps (ground / wall / air). The buffer lets a press fire up to jumpBufferTime later.
         if (assists.HasBufferedJump && TryJump(ref vel, jumpPress, h))
         {
             assists.ConsumeJumpBuffer();
             gripping = false;
+            gripAllowed = false; // Jumping off; holding Space is for jump ascent, not wall-grip
+        }
+        else if (gripping)
+        {
+            assists.ConsumeJumpBuffer(); // Consumed by grip, don't keep buffered
         }
 
         // --- Horizontal

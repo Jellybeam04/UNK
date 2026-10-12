@@ -1,16 +1,28 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD_Controller : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Slider stressBarFill;
+    private void Awake()
     {
-        
+        if (stressBarFill == null)
+            stressBarFill = GetComponent<Slider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
+            PlayerStress.OnStressChanged += UpdateStressBar;
         
+    }
+    private void OnDisable()
+    {
+            PlayerStress.OnStressChanged -= UpdateStressBar;
+    }
+
+    private void UpdateStressBar(float normalizeValue)
+    {
+            stressBarFill.value = normalizeValue;
     }
 }
